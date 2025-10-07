@@ -33,7 +33,7 @@ export async function fetchNotes(
       (note) => note.tag?.toLowerCase() === tag.toLowerCase()
     )
   }
-
+  console.log('Fetched notes:', data)
   return { ...data, notes }
 }
 

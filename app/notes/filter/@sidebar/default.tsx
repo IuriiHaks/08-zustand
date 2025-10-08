@@ -5,15 +5,14 @@ const tags = ['All', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping']
 
 export default function DefaultSidebar() {
   return (
-    <aside className="sidebar">
+    <aside>
       <nav>
         <ul>
           {tags.map((tag) => (
             <li key={tag}>
-              <Link
-                href={'/notes/filter/${tag}'}
-                className={css.menuLink}
-              ></Link>
+              <Link href={'/notes/filter/${tag}'} className={css.menuLink}>
+                {tag}
+              </Link>
             </li>
           ))}
         </ul>

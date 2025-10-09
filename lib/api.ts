@@ -18,23 +18,22 @@ export interface NotesResponse {
 export async function fetchNotes(
   search = '',
   page = 1,
-  perPage = 10,
+  perPage = 15,
   tag?: string
 ): Promise<NotesResponse> {
-  const params: Record<string, string | number> = { page, perPage }
-  if (search && search.trim()) params.search = search
+  const params: Record<string, string | number> = {
+    search,
+    page,
+    perPage,
+  }
+  if (search.trim()) params.search = search
+
+  if (tag && tag !== 'All') params.tag = tag
 
   const { data } = await api.get<NotesResponse>('/notes', { params })
 
-  let notes = data.notes
-
-  if (tag && tag !== 'All') {
-    notes = notes.filter(
-      (note) => note.tag?.toLowerCase() === tag.toLowerCase()
-    )
-  }
   // console.log('Fetched notes:', data)
-  return { ...data, notes }
+  return data
 }
 
 export async function fetchNoteById(id: string): Promise<Note> {

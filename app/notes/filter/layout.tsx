@@ -1,4 +1,5 @@
 import css from './LayoutNotes.module.css'
+import React from 'react'
 
 export default function FilterLayout({
   children,

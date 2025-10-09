@@ -10,7 +10,7 @@ export default function DefaultSidebar() {
         <ul>
           {tags.map((tag) => (
             <li key={tag}>
-              <Link href={'/notes/filter/${tag}'} className={css.menuLink}>
+              <Link href={`/notes/filter/${tag}`} className={css.menuLink}>
                 {tag}
               </Link>
             </li>

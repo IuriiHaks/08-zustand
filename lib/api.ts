@@ -18,7 +18,7 @@ export interface NotesResponse {
 export async function fetchNotes(
   search = '',
   page = 1,
-  perPage = 15,
+  perPage = 10,
   tag?: string
 ): Promise<NotesResponse> {
   const params: Record<string, string | number> = {

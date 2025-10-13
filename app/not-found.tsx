@@ -1,4 +1,5 @@
-import css from '../components/Home/Home.module.css'
+import Link from 'next/link'
+import css from '../app/Home.module.css'
 
 export default function NotFound() {
   return (
@@ -7,6 +8,7 @@ export default function NotFound() {
       <p className={css.description}>
         Sorry, the page you are looking for does not exist.
       </p>
+      <Link href={'/'}>Go back home</Link>
     </div>
   )
 }

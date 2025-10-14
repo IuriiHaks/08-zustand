@@ -20,3 +20,9 @@ export interface UpdateNoteRequest {
   content?: string
   tag?: NoteTag
 }
+
+export interface DraftNote {
+  title: string
+  content: string
+  tag: NoteTag
+}

@@ -16,6 +16,7 @@ import Modal from '@/components/Modal/Modal'
 import { useDebouncedCallback } from 'use-debounce'
 import type { CreateNoteRequest } from '@/types/note'
 import css from './Notes.client.module.css'
+import Link from 'next/link'
 
 interface Props {
   initialTag?: string
@@ -54,9 +55,13 @@ export default function NotesClient({ initialTag = 'All' }: Props) {
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox value={searchInput} onSearch={handleSearch} />
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>
+        <Link
+          href="notes/action/create"
+          className={css.button}
+          onClick={() => setIsModalOpen(true)}
+        >
           Create note +
-        </button>
+        </Link>
       </header>
 
       {isLoading && <p className={css.loading}>Loading, please wait...</p>}

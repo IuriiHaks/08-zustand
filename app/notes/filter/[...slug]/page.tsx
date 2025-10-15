@@ -1,10 +1,7 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider'
 import NotesClient from './Notes.client'
-// import { fetchNotes } from '@/lib/api'
-import { fetchNotesByFilter } from '@/lib/api'
-import { Metadata } from 'next'
-// import NotesList from '@/components/NoteList/NoteList'
+import { fetchNotes } from '@/lib/api'
 
 interface NotePageProps {
   params: Promise<{ slug?: string[] }>
@@ -12,18 +9,27 @@ interface NotePageProps {
 
 export async function generateMetadata({
   params,
-}: NotePageProps): Promise<Metadata> {
-  const resolvedParams = await params
-  const filter = resolvedParams.slug?.join('/') || 'All'
+}: {
+  params: { slug: string[] }
+}) {
+  const filter = params.slug.join('/')
+  const title = `Notes filtered by ${filter} — NoteHub`
+  const description = `Viewing notes filtered by: ${filter}`
+  const url = `https://08-zustand-iota-two.vercel.app/notes/filter/${filter}`
+
   return {
-    title: `NoteHub — Filter: ${filter}`,
-    description: `Перегляд нотаток за фільтром: ${filter}.`,
+    title,
+    description,
     openGraph: {
-      title: `NoteHub — Filter: ${filter}`,
-      description: `Перегляд нотаток за фільтром: ${filter}.`,
-      url: `https://08-zustand-iota-two.vercel.app/notes/filter/${filter}`,
+      title,
+      description,
+      url,
       images: [
-        { url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg' },
+        {
+          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+          width: 1200,
+          height: 630,
+        },
       ],
     },
   }
@@ -35,7 +41,7 @@ export default async function NotesFilterPage({ params }: NotePageProps) {
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['notes', tag, 1],
-    queryFn: () => fetchNotesByFilter(tag),
+    queryFn: () => fetchNotes('', 1, 10, tag === 'All' ? undefined : tag),
   })
 
   return (

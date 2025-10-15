@@ -22,7 +22,7 @@ export async function fetchNotes(
   tag?: string
 ): Promise<NotesResponse> {
   const params: Record<string, string | number> = {
-    // search,
+    search,
     page,
     perPage,
   }
@@ -48,19 +48,5 @@ export async function createNote(payload: CreateNoteRequest): Promise<Note> {
 
 export async function deleteNote(id: string): Promise<Note> {
   const { data } = await api.delete<Note>(`/notes/${id}`)
-  return data
-}
-
-export async function fetchNotesByFilter(tag?: string): Promise<NotesResponse> {
-  const params: Record<string, string | number> = {
-    page: 1,
-    perPage: 10,
-  }
-
-  if (tag && tag !== 'All') {
-    params.tag = tag
-  }
-
-  const { data } = await api.get<NotesResponse>('/notes', { params })
   return data
 }

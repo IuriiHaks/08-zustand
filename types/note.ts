@@ -21,7 +21,7 @@ export interface UpdateNoteRequest {
   tag?: NoteTag
 }
 
-export interface DraftNote {
+export interface NoteDraft {
   title: string
   content: string
   tag: NoteTag

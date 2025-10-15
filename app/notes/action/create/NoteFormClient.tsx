@@ -1,4 +1,3 @@
-// app/notes/action/create/NoteFormClient.tsx
 'use client'
 
 import NoteForm from '@/components/NoteForm/NoteForm'
@@ -8,7 +7,7 @@ export default function NoteFormClient() {
   const router = useRouter()
 
   const handleSuccess = () => {
-    router.push('/notes') // або інший маршрут після створення
+    router.push('/notes')
   }
 
   const handleCancel = () => {

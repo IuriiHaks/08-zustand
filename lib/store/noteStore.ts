@@ -1,17 +1,17 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { DraftNote } from '@/types/note'
+import { NoteDraft } from '@/types/note'
 
-interface NoteStore {
-  draft: DraftNote
-  setDraft: (note: Partial<DraftNote>) => void
-  clearDraft: () => void
-}
-
-const initialDraft: DraftNote = {
+const initialDraft: NoteDraft = {
   title: '',
   content: '',
   tag: 'Todo',
+}
+
+interface NoteStore {
+  draft: NoteDraft
+  setDraft: (note: Partial<NoteDraft>) => void
+  clearDraft: () => void
 }
 
 export const useNoteStore = create<NoteStore>()(
@@ -19,12 +19,16 @@ export const useNoteStore = create<NoteStore>()(
     (set) => ({
       draft: initialDraft,
       setDraft: (note) =>
-        set((state) => ({ draft: { ...state.draft, ...note } })),
+        set((state) => ({
+          draft: { ...state.draft, ...note },
+        })),
       clearDraft: () => set({ draft: initialDraft }),
     }),
     {
-      name: 'note-draft-storage',
-      partialize: (state) => ({ draft: state.draft }),
+      name: 'note-draft', // ключ у localStorage
+      // partialize: (state) => ({ draft: state.draft }),
     }
   )
 )
+
+export default useNoteStore

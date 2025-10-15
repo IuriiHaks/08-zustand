@@ -3,29 +3,27 @@ import Header from '@/components/Header/Header'
 import React from 'react'
 import Footer from '@/components/Footer/Footer'
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider'
-import { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 
 const roboto = Roboto({
-  weight: ['400', '500', '800'],
+  weight: ['400', '700'],
+  subsets: ['latin'],
   variable: '--font-roboto',
   display: 'swap',
-  subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'NoteHub',
-  description: 'Create, edit, and manage notes easily with NoteHub',
+  description: 'Your app to create, edit and browse notes',
   openGraph: {
     title: 'NoteHub',
-    description: 'Create, edit, and manage notes easily with NoteHub',
+    description: 'Your app to create, edit and browse notes',
     url: 'https://08-zustand-iota-two.vercel.app',
     images: [
       {
         url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
         width: 1200,
         height: 630,
-        alt: 'NoteHub',
       },
     ],
   },
@@ -39,8 +37,8 @@ export default function RootLayout({
   modal?: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={roboto.variable}>
+    <html lang="en" className={roboto.variable}>
+      <body>
         <TanStackProvider>
           <Header />
           {children}

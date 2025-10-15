@@ -55,12 +55,15 @@ export default function NotesClient({ initialTag = 'All' }: Props) {
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox value={searchInput} onSearch={handleSearch} />
+        {/* <button className={css.button} onClick={() => setIsModalOpen(true)}>
+          Create note +
+        </button> */}
         <Link
-          href="notes/action/create"
+          href="/notes/action/create"
           className={css.button}
           onClick={() => setIsModalOpen(true)}
         >
-          Create note +
+          Create note
         </Link>
       </header>
 

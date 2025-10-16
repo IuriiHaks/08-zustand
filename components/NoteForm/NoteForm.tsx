@@ -120,6 +120,7 @@ import type { CreateNoteRequest, NoteTag } from '@/types/note'
 import { createNote } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import useNoteStore from '@/lib/store/noteStore'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface NoteFormProps {
   onSubmit?: (payload: CreateNoteRequest) => void
@@ -136,8 +137,18 @@ const tagOptions: NoteTag[] = [
 ]
 
 export default function NoteForm({}: NoteFormProps) {
+  const queryClient = useQueryClient()
   const router = useRouter()
   const { draft, setDraft, clearDraft } = useNoteStore()
+
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] })
+      clearDraft()
+      router.back()
+    },
+  })
 
   // Локальний стан форми (ініціалізується з draft)
   const [formData, setFormData] = useState<CreateNoteRequest>(draft)
@@ -162,6 +173,7 @@ export default function NoteForm({}: NoteFormProps) {
   // Сабміт форми
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    mutation.mutate(draft)
 
     try {
       await createNote(formData)

@@ -2,6 +2,7 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider'
 import NotesClient from './Notes.client'
 import { fetchNotes } from '@/lib/api'
+import { Metadata } from 'next'
 
 interface NotePageProps {
   params: Promise<{ slug?: string[] }>
@@ -10,9 +11,10 @@ interface NotePageProps {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string[] }
-}) {
-  const filter = params.slug.join('/')
+  params: Promise<{ slug?: string[] }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const filter = slug?.join(', ') || 'All'
   const title = `Notes filtered by ${filter} — NoteHub`
   const description = `Viewing notes filtered by: ${filter}`
   const url = `https://08-zustand-iota-two.vercel.app/notes/filter/${filter}`

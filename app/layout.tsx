@@ -4,15 +4,16 @@ import React from 'react'
 import Footer from '@/components/Footer/Footer'
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider'
 import { Roboto } from 'next/font/google'
+import { Metadata } from 'next'
 
 const roboto = Roboto({
-  weight: ['400', '700'],
+  weight: ['400', '500', '700'],
   subsets: ['latin'],
   variable: '--font-roboto',
   display: 'swap',
 })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'NoteHub',
   description: 'Your app to create, edit and browse notes',
   openGraph: {

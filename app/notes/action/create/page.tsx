@@ -1,12 +1,13 @@
+import { Metadata } from 'next'
 import css from './CreateNote.module.css'
 import NoteFormClient from './NoteFormClient'
 
-export const metadata = {
-  title: 'NoteHub — Create Note',
-  description: 'Create a new note on NoteHub',
+export const metadata: Metadata = {
+  title: 'Create Note | NoteHub',
+  description: 'Create a new note in your NoteHub.',
   openGraph: {
-    title: 'NoteHub — Create Note',
-    description: 'Create a new note on NoteHub',
+    title: 'Create Note | NoteHub',
+    description: 'Create a new note in your NoteHub.',
     url: 'https://08-zustand-iota-two.vercel.app/notes/action/create',
     images: [
       {

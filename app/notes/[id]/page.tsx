@@ -2,16 +2,22 @@ import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { fetchNoteById } from '@/lib/api'
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider'
 import NotePreviewClient from '@/app/@modal/(.)notes/[id]/NotePreview.client'
+import { Metadata } from 'next'
 
 interface Props {
   params: Promise<{ id: string }>
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const note = await fetchNoteById(params.id)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const note = await fetchNoteById(id)
   const title = note.title
-  const description = note.content.slice(0, 160) // короткий опис
-  const url = `https://08-zustand-iota-two.vercel.app/notes/${params.id}`
+  const description = note.content.slice(0, 160)
+  const url = `https://08-zustand-iota-two.vercel.app/notes/${id}`
 
   return {
     title,

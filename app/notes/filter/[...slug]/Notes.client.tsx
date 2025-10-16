@@ -1,35 +1,21 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  useQuery,
-  useQueryClient,
-  useMutation,
-  keepPreviousData,
-} from '@tanstack/react-query'
-import { fetchNotes, createNote } from '@/lib/api'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import { fetchNotes } from '@/lib/api'
 import NoteList from '@/components/NoteList/NoteList'
 import SearchBox from '@/components/SearchBox/SearchBox'
 import Pagination from '@/components/Pagination/Pagination'
-import NoteForm from '@/components/NoteForm/NoteForm'
-import Modal from '@/components/Modal/Modal'
 import { useDebouncedCallback } from 'use-debounce'
-import type { CreateNoteRequest } from '@/types/note'
 import css from './Notes.client.module.css'
 import Link from 'next/link'
 
 interface Props {
-  initialTag?: string
+  tag?: string
 }
-export default function NotesClient({ initialTag = 'All' }: Props) {
+export default function NotesClient({ tag }: Props) {
   const [searchInput, setSearchInput] = useState('')
-  const [tag] = useState<string | undefined>(
-    initialTag === 'All' ? undefined : initialTag
-  )
   const [page, setPage] = useState(1)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const queryClient = useQueryClient()
 
   const debouncedSetQuery = useDebouncedCallback(() => {
     setPage(1)
@@ -46,23 +32,11 @@ export default function NotesClient({ initialTag = 'All' }: Props) {
     placeholderData: keepPreviousData,
   })
 
-  const createMutation = useMutation({
-    mutationFn: (payload: CreateNoteRequest) => createNote(payload),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notes'] }),
-  })
-
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox value={searchInput} onSearch={handleSearch} />
-        {/* <button className={css.button} onClick={() => setIsModalOpen(true)}>
-          Create note +
-        </button> */}
-        <Link
-          href="/notes/action/create"
-          className={css.button}
-          onClick={() => setIsModalOpen(true)}
-        >
+        <Link href="/notes/action/create" className={css.button}>
           Create note
         </Link>
       </header>
@@ -80,16 +54,6 @@ export default function NotesClient({ initialTag = 'All' }: Props) {
           currentPage={page}
           onPageChange={setPage}
         />
-      )}
-
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <NoteForm
-            onSuccess={() => setIsModalOpen(false)}
-            onCancel={() => setIsModalOpen(false)}
-            onSubmit={(values) => createMutation.mutate(values)}
-          />
-        </Modal>
       )}
     </div>
   )

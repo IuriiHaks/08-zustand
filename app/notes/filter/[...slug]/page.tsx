@@ -15,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const filter = slug?.join(', ') || 'All'
-  const title = `Notes filtered by ${filter} — NoteHub`
+  const title = `Notes: ${filter}`
   const description = `Viewing notes filtered by: ${filter}`
   const url = `https://08-zustand-iota-two.vercel.app/notes/filter/${filter}`
 
@@ -48,7 +48,7 @@ export default async function NotesFilterPage({ params }: NotePageProps) {
 
   return (
     <TanStackProvider dehydratedState={dehydrate(queryClient)}>
-      <NotesClient initialTag={tag} />
+      <NotesClient tag={tag} />
     </TanStackProvider>
   )
 }

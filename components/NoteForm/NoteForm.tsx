@@ -122,12 +122,6 @@ import { useRouter } from 'next/navigation'
 import useNoteStore from '@/lib/store/noteStore'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-interface NoteFormProps {
-  onSubmit?: (payload: CreateNoteRequest) => void
-  onSuccess: () => void
-  onCancel: () => void
-}
-
 const tagOptions: NoteTag[] = [
   'Todo',
   'Work',
@@ -136,7 +130,7 @@ const tagOptions: NoteTag[] = [
   'Shopping',
 ]
 
-export default function NoteForm({}: NoteFormProps) {
+export default function NoteForm() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { draft, setDraft, clearDraft } = useNoteStore()
@@ -171,18 +165,19 @@ export default function NoteForm({}: NoteFormProps) {
   }
 
   // Сабміт форми
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    mutation.mutate(draft)
-
-    try {
-      await createNote(formData)
-      clearDraft() // очищаємо після успішного створення
-      router.back() // повертаємо користувача
-    } catch (err) {
-      console.error('Error creating note:', err)
-    }
+    mutation.mutate(formData)
   }
+
+  //   try {
+  //     await createNote(formData)
+  //     clearDraft() // очищаємо після успішного створення
+  //     router.back() // повертаємо користувача
+  //   } catch (err) {
+  //     console.error('Error creating note:', err)
+  //   }
+  // }
 
   // Відміна створення (draft залишається)
   const handleCancel = () => {
@@ -244,8 +239,12 @@ export default function NoteForm({}: NoteFormProps) {
         >
           Cancel
         </button>
-        <button type="submit" className={css.submitButton}>
-          Create note
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={mutation.isPending}
+        >
+          {mutation.isPending ? 'Creating...' : ' Create note'}
         </button>
       </div>
     </form>

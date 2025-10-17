@@ -6,7 +6,7 @@ import { fetchNotes } from '@/lib/api'
 import NoteList from '@/components/NoteList/NoteList'
 import SearchBox from '@/components/SearchBox/SearchBox'
 import Pagination from '@/components/Pagination/Pagination'
-import { useDebouncedCallback } from 'use-debounce'
+import { useDebounce } from 'use-debounce'
 import css from './Notes.client.module.css'
 import Link from 'next/link'
 
@@ -17,18 +17,16 @@ export default function NotesClient({ tag }: Props) {
   const [searchInput, setSearchInput] = useState('')
   const [page, setPage] = useState(1)
 
-  const debouncedSetQuery = useDebouncedCallback(() => {
-    setPage(1)
-  }, 500)
+  const [debouncedSearch] = useDebounce(searchInput, 500)
 
   const handleSearch = (value: string) => {
     setSearchInput(value)
-    debouncedSetQuery()
+    setPage(1)
   }
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['notes', tag ?? 'All', page, searchInput],
-    queryFn: () => fetchNotes(searchInput, page, 10, tag),
+    queryKey: ['notes', tag ?? 'All', page, debouncedSearch],
+    queryFn: () => fetchNotes(debouncedSearch, page, 10, tag),
     placeholderData: keepPreviousData,
   })
 

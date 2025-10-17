@@ -129,12 +129,12 @@ const tagOptions: NoteTag[] = [
   'Meeting',
   'Shopping',
 ]
-
 export default function NoteForm() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const { draft, setDraft, clearDraft } = useNoteStore()
 
+  // Мутація створення нотатки
   const mutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
@@ -169,15 +169,6 @@ export default function NoteForm() {
     e.preventDefault()
     mutation.mutate(formData)
   }
-
-  //   try {
-  //     await createNote(formData)
-  //     clearDraft() // очищаємо після успішного створення
-  //     router.back() // повертаємо користувача
-  //   } catch (err) {
-  //     console.error('Error creating note:', err)
-  //   }
-  // }
 
   // Відміна створення (draft залишається)
   const handleCancel = () => {
